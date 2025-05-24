@@ -6,19 +6,23 @@
 # License:    GNU General Public License v3.0, https://opensource.org/licenses/GPL-3.0
 
 ### DESCRIPTION
-When pairing a bluetooth device to a bluetooth controller, a random key is generated in order to authenticate the connection, so e.g. in a multi boot scenario, only the os in wich you last paired this device has the newer working key, you'll need to pair it again in another system (then only this other system will have the newer working key).
-This is true for every system, whether they are linux or windows or both or wathever.
+When you pair a Bluetooth device with an operating system, a unique authentication key is generated. In a multi-boot setup, only the OS where the device was last paired holds the latest working key. This means you'll need to re-pair the device on any other system, as they won't recognize the new key. This behavior applies across all operating systems, Linux, Windows, or others.
 
-This script is intended to be used in a linux\windows multi boot scenario. It will check for linux and windows paired bluetooth devices and, if it finds that a device pairing key isn't equal between linux\windows, it will ask which pairing key you want to use (the os in wich you last paired this device has the newer working key) so it will update the old key with the new key accordingly.
+This script is designed for dual-boot environments involving Linux and Windows. It compares the paired Bluetooth devices between the two systems. If it finds mismatched pairing keys for a device, it will prompt you to choose which key to use (typically, the system where you last paired the device has the current valid key). The script will then update the older key with the selected one.
 
-Importing the bluetooth pairing keys from windows to linux is a safe procedure.
-This could not be true for the opposite, importing the bluetooth pairing keys from linux to windows is risky as it could mess with the windows registry, so the recommended procedure is to pair your bluetooth devices in linux, then boot into windows and pair them there (if yet paired, remove them first) so windows has the newer working keys, then boot into linux and run `bt-keys-sync` and always choose \"`windows key`\" when prompted \"`which pairing key you want to use?`\" (or use option `--windows-keys`).
+Recommended Workflow:
+Importing Bluetooth keys from Windows to Linux is generally safe. However, the reverse, importing from Linux to Windows, can be risky, as it involves modifying the Windows registry. For best results:
 
-If you, at your own risk, decide to import the bluetooth pairing keys from linux to windows `(this has been tested on windows 10 only)` a backup of the windows SYSTEM registry hive file will be created, so in case of problems you could try to restore it.
+1. Pair your Bluetooth devices in Linux first.
+2. Boot into Windows, remove any existing pairings, and re-pair the devices so that Windows stores the updated keys.
+3. Boot back into Linux and run `bt-keys-sync`, choosing the "`Windows key`" when prompted, or use the `--windows-keys` option to automate the process.
+
+**Warning:**
+If you choose to import keys from Linux to Windows `(tested only on Windows 10 and 11)`, proceed at your own risk. The script will back up the Windows SYSTEM registry hive file before making changes, allowing you to restore it in case of any issues.
 
 ### About Bluetooth Low Energy (BLE)
-Bluetooth Low Energy Device (BLE) can be detected, but key checks will be skipped.
-Please take a look here: https://github.com/KeyofBlueS/bt-keys-sync/issues/13
+BLE devices can be detected, but their keys will not be validated or synchronized.
+For more information on BLE handling, please refer to [this issue](https://github.com/KeyofBlueS/bt-keys-sync/issues/13).
 
 ### INSTALL
 ```
@@ -31,21 +35,26 @@ sudo chmod +x /opt/bt-keys-sync/bt-keys-sync.sh
 sudo ln -s /opt/bt-keys-sync/bt-keys-sync.sh /usr/local/bin/bt-keys-sync
 ```
 
-This script require \"chntpw\". Install it e.g. with:
+This script requires the `chntpw` utility, which is used to read and modify Windows registry files. You can install it on most Debian-based systems using:
 
 `sudo apt install chntpw`
 
 ### USAGE
-Mount the windows partition (make sure you have read\write access to it), then run this script:
+Before running the script, make sure the Windows partition is mounted with read and write access.
+
+To run the script, simply execute:
 
 `$ bt-keys-sync`
 
-It will search for a windows SYSTEM registry hive file in `/media` and `/mnt`.
-If no windows SYSTEM registry hive file is found, then you must enter the full path (usually is something like `"<windows_mount_point>/Windows/System32/config/SYSTEM"`).
+The script will automatically search for the Windows `SYSTEM` registry hive file within common mount points such as `/media` and `/mnt`. If it cannot locate the file, you will need to manually provide the full path. This path typically looks like:
 
-You can skip the automatic search by the option `--path`.
+`"<windows_mount_point>/Windows/System32/config/SYSTEM"`
 
-With the `--control-set` option you can change the control set to check. Default is ControlSet001.
+To skip the automatic search, use the `--path` option followed by the path to the registry hive:
+
+`$ bt-keys-sync --path "<windows_mount_point>/Windows/System32/config/SYSTEM"`
+
+By default, the script checks ControlSet001 in the registry. You can specify a different control set using the `--control-set option`.
 
 ```
 Options:
