@@ -460,7 +460,7 @@ function bt_keys_sync_common() {
 					fi
 					sudo cp "${tmp_dir}/${tmp_info_new}" "/var/lib/bluetooth/${bt_controller_macaddr}/${bt_device_macaddr}/info"
 				fi
-				bt_devices_sync_from_windows+="- Bluetooth controller: ${bt_controller_macaddr} \ Bluetooth device: ${bt_device_macaddr} - ${bt_device_name}\n"
+				bt_devices_sync_from_windows+="- Bluetooth controller: ${bt_controller_macaddr} \ Bluetooth device: ${bt_device_macaddr} - ${linux_bt_device_name}\n"
 			elif [[ "${bt_keys_sync_from_os}" = 'linux' ]]; then
 				if [[ -n "${dry_run}" ]]; then
 					echo "		*Not writing Windows keys, since dry run is enabled"
@@ -468,7 +468,7 @@ function bt_keys_sync_common() {
 					check_sudo
 					sudo cp "${tmp_dir}/${tmp_reg_new}" "${tmp_dir}/${tmp_reg}"
 				fi
-				bt_devices_sync_from_linux+="- Bluetooth controller: ${bt_controller_macaddr} \ Bluetooth device: ${bt_device_macaddr} - ${bt_device_name}\n"
+				bt_devices_sync_from_linux+="- Bluetooth controller: ${bt_controller_macaddr} \ Bluetooth device: ${bt_device_macaddr} - ${windows_bt_device_name}\n"
 			fi
 			break
 		fi
