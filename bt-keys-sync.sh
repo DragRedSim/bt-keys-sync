@@ -607,7 +607,7 @@ function bt_keys_sync_from_linux() {
 function bt_keys_sync() {
 	check_sudo
 	if ! sudo bash -c "command -v reged" >/dev/null; then
-		echo -e "\e[1;31mERROR: This script require \e[1;34mchntpw\e[1;31m. Use e.g. \e[1;34msudo apt install chntpw\e[0m"
+		echo -e "\e[1;31mERROR: This script requires \e[1;34mchntpw\e[1;31m. Use e.g. \e[1;34msudo apt install chntpw\e[0m"
 		exit 1
 	fi
 
@@ -676,11 +676,11 @@ function bt_keys_sync() {
 					echo -e "\e[1;31m- The Linux Bluetooth pairing keys from the following devices haven't yet been imported to the Windows SYSTEM registry hive:\e[0m"
 					echo -e "${bt_devices_sync_from_linux}"
 					echo -e "\e[1;31m- This procedure is risky as it could mess with the Windows registry.\e[0m"
-					echo -e "\e[1;31m  The OS in wich you last paired these devices has the newer working keys\e[0m"
+					echo -e "\e[1;31m  The OS in which you last paired these devices has the newer working keys,\e[0m"
 					echo -e "\e[1;31m  so the recommended procedure is to boot into Windows and pair them there (if already paired, remove them first) so Windows has the newer working keys\e[0m"
-					echo -e "\e[1;31m  then boot into Linux, run ${bt_keys_sync_name} and always choose \"Windows keys\" when prompted \"which pairing key you want to use?\" (or use option --windows-keys).\e[0m"
+					echo -e "\e[1;31m  then boot into Linux, run ${bt_keys_sync_name} and always choose \"Windows keys\" when prompted \"Which pairing key do you want to use?\" (or use option --windows-keys).\e[0m"
 					echo
-					echo -e "\e[1;31m- If you, at your own risk, decide to import the Bluetooth pairing keys from Linux to Windows (this has been tested on Windows 10 only)\e[0m"
+					echo -e "\e[1;31m- If you, at your own risk, decide to import the Bluetooth pairing keys from Linux to Windows (this has been tested on Windows 10 only),\e[0m"
 					echo -e "\e[1;31m  a backup of the Windows SYSTEM registry hive file will be created, so in case of problems you could try to restore it.\e[0m"
 
 					if [[ -f "${system_hive%/*}/SOFTWARE" ]]; then
@@ -702,7 +702,7 @@ function bt_keys_sync() {
 
 					while true; do
 						echo
-						echo -e "\e[1;31m- do you want to import the Linux Bluetooth pairing keys to the Windows SYSTEM registry hive?\e[0m"
+						echo -e "\e[1;31m- Do you want to import the Linux Bluetooth pairing keys to the Windows SYSTEM registry hive?\e[0m"
 						echo -e "\e[1;32m0) No\e[0m"
 						echo -e "\e[1;31m1) Yes\e[0m"
 						read -p " choose> " import_registry
@@ -738,7 +738,7 @@ function bt_keys_sync() {
 								fi
 							else
 								echo -e "\e[1;31m- error while making the backup of the Windows SYSTEM registry hive file\e[0m"
-								echo -e "\e[1;31m- aborting\e[0m"
+								echo -e "\e[1;31m- aborting!\e[0m"
 								exit 1
 							fi
 						fi
@@ -851,7 +851,7 @@ function find_system_hive()	{
 				fi
 			done
 		else
-			echo -e "\e[1;32m* please select a Windows SYSTEM registry hive file:\e[0m"
+			echo -e "\e[1;32m* Please select a Windows SYSTEM registry hive file:\e[0m"
 		fi
 		local i='0'
 		echo ' 0) Exit'
